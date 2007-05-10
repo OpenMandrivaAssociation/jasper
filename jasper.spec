@@ -1,6 +1,6 @@
 %define	name		jasper	
 %define	version		1.900.1
-%define	release		%mkrel 1
+%define	release		%mkrel 2
 
 %define lib_major	1
 %define lib_name	%mklibname %{name} %{lib_major}
@@ -40,6 +40,7 @@ Requires:	%{lib_name} = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	%{lib_name}-devel = %{version}-%{release}
+Conflicts:	lib64jasper1.701_1-devel
 
 %description -n %{lib_name}-devel
 The %{lib_name}-devel package includes the header files necessary for 
@@ -57,6 +58,7 @@ Requires:	%{lib_name}-devel = %{version}-%{release}
 Provides:	lib%{name}-static-devel = %{version}-%{release}
 Provides:	%{name}-static-devel = %{version}-%{release}
 Provides:	%{lib_name}-static-devel = %{version}-%{release}
+Conflicts:	lib64jasper1.701_1-static-devel
 
 %description -n %{lib_name}-static-devel
 The %{lib_name}-static-devel package includes the static 
