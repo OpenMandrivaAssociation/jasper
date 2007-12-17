@@ -13,7 +13,6 @@ License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
-BuildRoot:	%_tmppath/%name-buildroot
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmesaglut-devel
 
