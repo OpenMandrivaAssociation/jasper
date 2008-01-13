@@ -1,6 +1,6 @@
 %define	name		jasper	
 %define	version		1.900.1
-%define	release		%mkrel 2
+%define	release		%mkrel 3
 
 %define lib_major	1
 %define lib_name	%mklibname %{name} %{lib_major}
