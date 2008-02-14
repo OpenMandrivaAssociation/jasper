@@ -11,6 +11,7 @@ Version:	%version
 Release:	%release
 License:	BSD-like
 Group:		Graphics
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
 BuildRequires:	libjpeg-devel
