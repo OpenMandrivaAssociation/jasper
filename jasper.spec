@@ -1,96 +1,92 @@
-%define	name		jasper	
-%define	version		1.900.1
-%define	release		%mkrel 4
-
-%define lib_major	1
-%define lib_name	%mklibname %{name} %{lib_major}
+%define major 1
+%define libname %mklibname %{name} %{major}
+%define develname %mklibname %{name} -d
+%define staticname %mklibname %{name} -d -s
 
 Summary:	JPEG-2000 utilities
-Name:		%name
-Version:	%version
-Release:	%release
+Name:		jasper
+Version:	1.900.1
+Release:	%mkrel 5
 License:	BSD-like
 Group:		Graphics
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmesaglut-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 JasPer is a software-based implementation of the codec specified in the
 emerging JPEG-2000 Part-1 standard (i.e., ISO/IEC 15444-1).  This package
 contains tools for working with JPEG-2000 images.
 
-%package -n %{lib_name}
+%package -n %{libname}
 Summary:	Libraries for JasPer
 Group:		System/Libraries
 Provides:	lib%{name} = %{version}-%{release}
-Provides:	%{lib_name} = %{version}-%{release}
 
-%description -n %{lib_name}
+%description -n %{libname}
 JasPer is a software-based implementation of the codec specified in the
 emerging JPEG-2000 Part-1 standard (i.e., ISO/IEC 15444-1).  This package
 contains libraries for working with JPEG-2000 images.
 
-%package -n %{lib_name}-devel
+%package -n %{develname}
 Summary:	Development tools for programs which will use the libjasper library
 Group:		Development/C
-Requires:	%{lib_name} = %{version}-%{release}
+Requires:	%{libname} = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	%{lib_name}-devel = %{version}-%{release}
 Conflicts:	lib64jasper1.701_1-devel
+Obsoletes:	%{mklibname %{name} 1 -d} < 1.900.1-5
+Provides:	%{mklibname %{name} 1 -d}
 
-%description -n %{lib_name}-devel
-The %{lib_name}-devel package includes the header files necessary for 
+%description -n %{develname}
+The %{libname}-devel package includes the header files necessary for 
 developing programs which will manipulate JPEG-2000 files using
 the libjasper library.
 
 If you are going to develop programs which will manipulate JPEG-2000 images,
-you should install %{lib_name}-devel.  You'll also need to have the
-%{lib_name} package installed.
+you should install %{libname}-devel.  You'll also need to have the
+%{libname} package installed.
 
-%package -n %{lib_name}-static-devel
+%package -n %{staticname}
 Summary:	Static libraries for programs which will use the libjasper library
 Group:		Development/C
-Requires:	%{lib_name}-devel = %{version}-%{release}
+Requires:	%{develname} = %{version}-%{release}
 Provides:	lib%{name}-static-devel = %{version}-%{release}
 Provides:	%{name}-static-devel = %{version}-%{release}
-Provides:	%{lib_name}-static-devel = %{version}-%{release}
+Provides:	%{libname}-static-devel = %{version}-%{release}
 Conflicts:	lib64jasper1.701_1-static-devel
+Obsoletes:	%{mklibname %{name} 1 -d -s} < 1.900.1-5
+Provides:	%{mklibname %{name} 1 -d -s}
 
-%description -n %{lib_name}-static-devel
-The %{lib_name}-static-devel package includes the static 
+%description -n %{staticname}
+The %{libname}-static-devel package includes the static 
 libraries necessary for developing programs which will manipulate JPEG-2000 
 files using the libjasper library.
 
-
 %prep
-
 %setup -q
 
 %{__mv} doc/README doc/README.pdf
 
 %build
-
-%configure --enable-shared
+%configure2_5x --enable-shared
 
 %make
 
 %install
-
 %{__rm} -rf %{buildroot}
 
-%makeinstall
-%multiarch_includes $RPM_BUILD_ROOT%{_includedir}/jasper/jas_config.h
+%makeinstall_std
+%multiarch_includes %{buildroot}%{_includedir}/jasper/jas_config.h
 
 %if %mdkversion < 200900
-%post -n %{lib_name} -p /sbin/ldconfig
+%post -n %{libname} -p /sbin/ldconfig
 %endif
 
 %if %mdkversion < 200900
-%postun -n %{lib_name} -p /sbin/ldconfig
+%postun -n %{libname} -p /sbin/ldconfig
 %endif
 
 %clean
@@ -109,11 +105,11 @@ files using the libjasper library.
 %{_mandir}/man1/jasper.1*
 %{_mandir}/man1/jiv.1*
 
-%files -n %{lib_name}
+%files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/lib*.so.%{lib_major}*
+%{_libdir}/lib*.so.%{major}*
 
-%files -n %{lib_name}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %doc doc/README.pdf doc/jasper.pdf doc/jpeg2000.pdf 
 %multiarch %dir %{multiarch_includedir}/%{name}
@@ -123,8 +119,6 @@ files using the libjasper library.
 %{_libdir}/*.la
 %{_libdir}/*.so
 
-%files -n %{lib_name}-static-devel
+%files -n %{staticname}
 %defattr(-,root,root)
 %{_libdir}/*.a
-
-
