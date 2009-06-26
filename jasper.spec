@@ -6,11 +6,13 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	%mkrel 5
+Release:	%mkrel 6
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
-Source: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
+Source0: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
+# P0 comes from jasper_1.900.1-3ubuntu0.7.10.1.diff
+Patch0:		jasper-1.900.1-security_fixes.diff
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmesaglut-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -67,6 +69,7 @@ files using the libjasper library.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %{__mv} doc/README doc/README.pdf
 
