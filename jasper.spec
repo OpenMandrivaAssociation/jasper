@@ -3,10 +3,14 @@
 %define develname %mklibname %{name} -d
 %define staticname %mklibname %{name} -d -s
 
+%define bootstrap 0
+%{?_without_bootstrap: %global bootstrap 0}
+%{?_with_bootstrap: %global bootstrap 1}
+
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	%mkrel 7
+Release:	%mkrel 8
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
@@ -14,7 +18,9 @@ Source0: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%version.zip
 # P0 comes from jasper_1.900.1-3ubuntu0.7.10.1.diff
 Patch0:		jasper-1.900.1-security_fixes.diff
 BuildRequires:	libjpeg-devel
+%if !%bootstrap
 BuildRequires:	libmesaglut-devel
+%endif
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -101,7 +107,9 @@ files using the libjasper library.
 %{_bindir}/imgcmp
 %{_bindir}/imginfo
 %{_bindir}/jasper
+%if !%bootstrap
 %{_bindir}/jiv
+%endif
 %{_bindir}/tmrdemo
 %{_mandir}/man1/imgcmp.1*
 %{_mandir}/man1/imginfo.1*
