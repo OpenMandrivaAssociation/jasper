@@ -10,7 +10,7 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	%mkrel 11
+Release:	%mkrel 12
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
@@ -88,6 +88,7 @@ files using the libjasper library.
 %{__rm} -rf %{buildroot}
 
 %makeinstall_std
+
 %multiarch_includes %{buildroot}%{_includedir}/jasper/jas_config.h
 
 %if %mdkversion < 200900
@@ -123,9 +124,9 @@ files using the libjasper library.
 %files -n %{develname}
 %defattr(-,root,root)
 %doc doc/README.pdf doc/jasper.pdf doc/jpeg2000.pdf 
-%multiarch %dir %{multiarch_includedir}/%{name}
-%multiarch %{multiarch_includedir}/%{name}/*.h
 %dir %{_includedir}/%{name}
+%dir %{multiarch_includedir}/%{name}
+%{multiarch_includedir}/%{name}/*.h
 %{_includedir}/%{name}/*
 %{_libdir}/*.la
 %{_libdir}/*.so
