@@ -9,7 +9,7 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	14
+Release:	15
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
@@ -40,6 +40,7 @@ Summary:	Development tools for programs which will use the libjasper library
 Group:		Development/C
 Requires:	%{libname} >= %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
+Provides:	%{name}-devel = %{version}-%{release}
 Conflicts:	lib64jasper1.701_1-devel
 Obsoletes:	%{mklibname %{name} 1 -d} < 1.900.1-5
 Provides:	%{mklibname %{name} 1 -d} = %{version}-%{release}
