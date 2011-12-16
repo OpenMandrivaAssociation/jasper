@@ -9,14 +9,41 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	15
+Release:	16
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0: 	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%{version}.zip
-# P0 comes from jasper_1.900.1-3ubuntu0.7.10.1.diff
-Patch0:		jasper-1.900.1-security_fixes.diff
+Patch1: jasper-1.701.0-GL.patch
+# autoconf/automake bits of patch1
+Patch2: jasper-1.701.0-GL-ac.patch
+# CVE-2007-2721 (bug #240397)
+# borrowed from http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=413041;msg=88
+Patch3: patch-libjasper-stepsizes-overflow.diff
+# borrowed from http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786 
+Patch4: jpc_dec.c.patch
+# OpenBSD hardening patches addressing couple of possible integer overflows
+# during the memory allocations
+# https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2008-3520
+Patch5: jasper-1.900.1-CVE-2008-3520.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2008-3522
+Patch6: jasper-1.900.1-CVE-2008-3522.patch
+# add pkg-config support
+Patch7: jasper-pkgconfig.patch
+
+Patch8: jasper-1.900.1-CVE-2011-4516-CVE-2011-4517-CERT-VU-887409.patch
+
+# Issues found by static analysis of code
+Patch10: jasper-1.900.1-Coverity-BAD_SIZEOF.patch
+Patch11: jasper-1.900.1-Coverity-CHECKED_RETURN.patch
+Patch12: jasper-1.900.1-Coverity-FORWARD_NULL.patch
+Patch13: jasper-1.900.1-Coverity-NULL_RETURNS.patch
+Patch14: jasper-1.900.1-Coverity-RESOURCE_LEAK.patch
+Patch15: jasper-1.900.1-Coverity-UNREACHABLE.patch
+Patch16: jasper-1.900.1-Coverity-UNUSED_VALUE.patch
+
 BuildRequires:	jpeg-devel
+BuildRequires:	autoconf automake libtool
 %if !%bootstrap
 BuildRequires:	mesaglut-devel
 %endif
@@ -55,12 +82,30 @@ you should install %{libname}-devel.  You'll also need to have the
 %{libname} package installed.
 
 %prep
+
 %setup -q
-%patch0 -p1
+%patch1 -p1 -b .GL
+%patch2 -p1 -b .GL-ac
+%patch3 -p1 -b .CVE-2007-2721
+%patch4 -p1 -b .jpc_dec_assertion
+%patch5 -p1 -b .CVE-2008-3520
+%patch6 -p1 -b .CVE-2008-3522
+%patch7 -p1 -b .pkgconfig
+%patch8 -p1 -b .CVE-2011-4516-4517
+
+%patch10 -p1 -b .BAD_SIZEOF
+%patch11 -p1 -b .CHECKED_RETURN
+%patch12 -p1 -b .FORWARD_NULL
+%patch13 -p1 -b .NULL_RETURNS
+%patch14 -p1 -b .RESOURCE_LEAK
+%patch15 -p1 -b .UNREACHABLE
+%patch16 -p1 -b .UNUSED_VALUE
 
 %{__mv} doc/README doc/README.pdf
 
 %build
+autoreconf -fi
+
 %configure2_5x \
     --enable-shared \
     --disable-static
@@ -68,12 +113,13 @@ you should install %{libname}-devel.  You'll also need to have the
 
 %install
 %{__rm} -rf %{buildroot}
+
 %makeinstall_std
 
 %multiarch_includes %{buildroot}%{_includedir}/jasper/jas_config.h
 
 # cleanup
-rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %files
 %doc README LICENSE NEWS
@@ -99,3 +145,4 @@ rm -f %{buildroot}%{_libdir}/*.la
 %{multiarch_includedir}/%{name}/*.h
 %{_includedir}/%{name}/*
 %{_libdir}/*.so
+%{_libdir}/pkgconfig/jasper.pc
