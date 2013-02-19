@@ -7,11 +7,11 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	17
+Release:	16
 License:	BSD-like
 Group:		Graphics
-URL:		http://www.ece.uvic.ca/~mdadams/jasper/
-Source0:	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%{version}.zip
+Url:		http://www.ece.uvic.ca/~frodo/jasper/
+Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.zip
 Patch1:		jasper-1.701.0-GL.patch
 # autoconf/automake bits of patch1
 Patch2:		jasper-1.701.0-GL-ac.patch
@@ -42,7 +42,7 @@ Patch16:	jasper-1.900.1-Coverity-UNUSED_VALUE.patch
 
 BuildRequires:	jpeg-devel
 %if !%{with bootstrap}
-BuildRequires:	mesaglut-devel
+BuildRequires:	pkgconfig(glut)
 %endif
 
 %description
@@ -66,7 +66,6 @@ Requires:	%{libname} >= %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Conflicts:	lib64jasper1.701_1-devel
 Obsoletes:	%{mklibname %{name} 1 -d} < 1.900.1-5
-Provides:	%{mklibname %{name} 1 -d} = %{version}-%{release}
 
 %description -n	%{devname}
 The %{libname}-devel package includes the header files necessary for 
@@ -79,22 +78,7 @@ you should install %{libname}-devel.  You'll also need to have the
 
 %prep
 %setup -q
-%patch1 -p1 -b .GL
-%patch2 -p1 -b .GL-ac
-%patch3 -p1 -b .CVE-2007-2721
-%patch4 -p1 -b .jpc_dec_assertion
-%patch5 -p1 -b .CVE-2008-3520
-%patch6 -p1 -b .CVE-2008-3522
-%patch7 -p1 -b .pkgconfig
-%patch8 -p1 -b .CVE-2011-4516-4517
-
-%patch10 -p1 -b .BAD_SIZEOF
-%patch11 -p1 -b .CHECKED_RETURN
-%patch12 -p1 -b .FORWARD_NULL
-%patch13 -p1 -b .NULL_RETURNS
-%patch14 -p1 -b .RESOURCE_LEAK
-%patch15 -p1 -b .UNREACHABLE
-%patch16 -p1 -b .UNUSED_VALUE
+%apply_patches
 
 mv doc/README doc/README.pdf
 
@@ -103,8 +87,9 @@ find -type d |xargs chmod 755
 autoreconf -fi
 
 %build
-%configure2_5x	--enable-shared \
-		--disable-static
+%configure2_5x \
+	--enable-shared \
+	--disable-static
 %make
 
 %install
