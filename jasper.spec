@@ -10,7 +10,7 @@ Version:	1.900.1
 Release:	17
 License:	BSD-like
 Group:		Graphics
-URL:		http://www.ece.uvic.ca/~mdadams/jasper/
+Url:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-%{version}.zip
 Patch1:		jasper-1.701.0-GL.patch
 # autoconf/automake bits of patch1
@@ -42,7 +42,7 @@ Patch16:	jasper-1.900.1-Coverity-UNUSED_VALUE.patch
 
 BuildRequires:	jpeg-devel
 %if !%{with bootstrap}
-BuildRequires:	mesaglut-devel
+BuildRequires:	pkgconfig(glut)
 %endif
 
 %description
@@ -55,47 +55,20 @@ Summary:	Libraries for JasPer
 Group:		System/Libraries
 
 %description -n	%{libname}
-JasPer is a software-based implementation of the codec specified in the
-emerging JPEG-2000 Part-1 standard (i.e., ISO/IEC 15444-1).  This package
-contains libraries for working with JPEG-2000 images.
+This package contains a library for working with JPEG-2000 images.
 
 %package -n	%{devname}
 Summary:	Development tools for programs which will use the libjasper library
 Group:		Development/C
 Requires:	%{libname} >= %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Conflicts:	lib64jasper1.701_1-devel
-Obsoletes:	%{mklibname %{name} 1 -d} < 1.900.1-5
-Provides:	%{mklibname %{name} 1 -d} = %{version}-%{release}
 
 %description -n	%{devname}
-The %{libname}-devel package includes the header files necessary for 
-developing programs which will manipulate JPEG-2000 files using
-the libjasper library.
-
-If you are going to develop programs which will manipulate JPEG-2000 images,
-you should install %{libname}-devel.  You'll also need to have the
-%{libname} package installed.
+This package contains the development files for %{name}.
 
 %prep
 %setup -q
-%patch1 -p1 -b .GL
-%patch2 -p1 -b .GL-ac
-%patch3 -p1 -b .CVE-2007-2721
-%patch4 -p1 -b .jpc_dec_assertion
-%patch5 -p1 -b .CVE-2008-3520
-%patch6 -p1 -b .CVE-2008-3522
-%patch7 -p1 -b .pkgconfig
-%patch8 -p1 -b .CVE-2011-4516-4517
-
-%patch10 -p1 -b .BAD_SIZEOF
-%patch11 -p1 -b .CHECKED_RETURN
-%patch12 -p1 -b .FORWARD_NULL
-%patch13 -p1 -b .NULL_RETURNS
-%patch14 -p1 -b .RESOURCE_LEAK
-%patch15 -p1 -b .UNREACHABLE
-%patch16 -p1 -b .UNUSED_VALUE
-
+%apply_patches
 mv doc/README doc/README.pdf
 
 find -type d |xargs chmod 755
@@ -103,8 +76,9 @@ find -type d |xargs chmod 755
 autoreconf -fi
 
 %build
-%configure2_5x	--enable-shared \
-		--disable-static
+%configure2_5x \
+	--enable-shared \
+	--disable-static
 %make
 
 %install
@@ -137,3 +111,4 @@ autoreconf -fi
 %{_includedir}/%{name}/*
 %{_libdir}/libjasper.so
 %{_libdir}/pkgconfig/jasper.pc
+
