@@ -7,7 +7,7 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	1.900.1
-Release:	28
+Release:	29
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
@@ -28,7 +28,6 @@ Patch5:		jasper-1.900.1-CVE-2008-3520.patch
 Patch6:		jasper-1.900.1-CVE-2008-3522.patch
 # add pkg-config support
 Patch7:		jasper-pkgconfig.patch
-
 Patch8:		jasper-1.900.1-CVE-2011-4516-CVE-2011-4517-CERT-VU-887409.patch
 
 # Issues found by static analysis of code
@@ -39,6 +38,10 @@ Patch13:	jasper-1.900.1-Coverity-NULL_RETURNS.patch
 Patch14:	jasper-1.900.1-Coverity-RESOURCE_LEAK.patch
 Patch15:	jasper-1.900.1-Coverity-UNREACHABLE.patch
 Patch16:	jasper-1.900.1-Coverity-UNUSED_VALUE.patch
+
+Patch17:	jasper-CVE-2014-9029.patch
+Patch18:	jasper-CVE-2014-8137.patch
+Patch19:	jasper-CVE-2014-8138.patch
 
 BuildRequires:	jpeg-devel
 %if !%{with bootstrap}
@@ -76,7 +79,7 @@ find -type d |xargs chmod 755
 autoreconf -fi
 
 %build
-%configure2_5x \
+%configure \
 	--enable-shared \
 	--disable-static
 %make
