@@ -2,7 +2,7 @@
 %define	libname	%mklibname %{name} %{major}
 %define	devname	%mklibname %{name} -d
 
-%bcond_without	bootstrap
+%bcond_with bootstrap
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
