@@ -2,7 +2,7 @@
 %define	libname	%mklibname %{name} %{major}
 %define	devname	%mklibname %{name} -d
 
-%bcond_with bootstrap
+%bcond_without bootstrap
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
@@ -82,6 +82,7 @@ autoreconf -fi
 %configure \
 	--enable-shared \
 	--disable-static
+
 %make
 
 %install
