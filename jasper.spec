@@ -12,8 +12,6 @@ License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.tar.gz
-Patch0:		http://pkgs.fedoraproject.org/cgit/rpms/jasper.git/plain/jasper-1.900.1-CVE-2008-3520.patch
-
 BuildRequires:	jpeg-devel
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(glut)
