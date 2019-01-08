@@ -1,18 +1,20 @@
-%define	major	4
-%define	libname	%mklibname %{name} %{major}
-%define	devname	%mklibname %{name} -d
+%define major 4
+%define libname %mklibname %{name} %{major}
+%define devname %mklibname %{name} -d
 
 %bcond_without bootstrap
+
+%global optflags %{optflags} -O3
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	2.0.14
-Release:	3
+Release:	4
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.tar.gz
-BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libjpeg)
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(xmu)
@@ -25,25 +27,24 @@ JasPer is a software-based implementation of the codec specified in the
 emerging JPEG-2000 Part-1 standard (i.e., ISO/IEC 15444-1).  This package
 contains tools for working with JPEG-2000 images.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Libraries for JasPer
 Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains a library for working with JPEG-2000 images.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development tools for programs which will use the libjasper library
 Group:		Development/C
 Requires:	%{libname} >= %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
-%description -n	%{devname}
+%description -n %{devname}
 This package contains the development files for %{name}.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 mv doc/README doc/README.pdf
 
 find -type d |xargs chmod 755
