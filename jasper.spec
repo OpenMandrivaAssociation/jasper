@@ -15,7 +15,7 @@ Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.tar.gz
 BuildRequires:	pkgconfig(libjpeg)
-%if %{without bootstrap}
+%if !%{with bootstrap}
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(xmu)
