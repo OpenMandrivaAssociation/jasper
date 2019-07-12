@@ -2,14 +2,14 @@
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname %{name} -d
 
-%bcond_without bootstrap
+%bcond_with bootstrap
 
 %global optflags %{optflags} -O3
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	2.0.14
-Release:	4
+Release:	5
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
@@ -17,6 +17,7 @@ Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.tar.gz
 BuildRequires:	pkgconfig(libjpeg)
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(glut)
+BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(xmu)
 %endif
 BuildRequires:	cmake
