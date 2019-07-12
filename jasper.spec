@@ -8,14 +8,14 @@
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
-Version:	2.0.14
-Release:	5
+Version:	2.0.16
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
-Source0:	http://www.ece.uvic.ca/~frodo/jasper/software/jasper-%{version}.tar.gz
+Source0:	https://github.com/mdadams/jasper/releases/jasper-version-%{version}.tar.gz
 BuildRequires:	pkgconfig(libjpeg)
-%if !%{with bootstrap}
+%if %{without bootstrap}
 BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(xmu)
@@ -45,7 +45,7 @@ Provides:	%{name}-devel = %{version}-%{release}
 This package contains the development files for %{name}.
 
 %prep
-%autosetup -p1
+%autosetup -n %{name}-version-%{version} -p1
 mv doc/README doc/README.pdf
 
 find -type d |xargs chmod 755
