@@ -14,6 +14,7 @@ License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	https://github.com/mdadams/jasper/releases/jasper-version-%{version}.tar.gz
+Patch0:		jasper-1.900.1-fix-filename-buffer-overflow.patch
 BuildRequires:	pkgconfig(libjpeg)
 %if %{without bootstrap}
 BuildRequires:	pkgconfig(glut)
@@ -50,6 +51,7 @@ mv doc/README doc/README.pdf
 
 find -type d |xargs chmod 755
 find -type f |xargs chmod 644
+sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
 
 %cmake -G Ninja
 
