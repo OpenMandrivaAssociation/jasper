@@ -1,5 +1,5 @@
 %define major 6
-%define libname %mklibname %{name} %{major}
+%define libname %mklibname %{name}
 %define devname %mklibname %{name} -d
 
 %bcond_with bootstrap
