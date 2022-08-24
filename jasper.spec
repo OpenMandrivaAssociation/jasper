@@ -1,4 +1,4 @@
-%define major 4
+%define major 6
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname %{name} -d
 
@@ -8,13 +8,12 @@
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
-Version:	2.0.16
+Version:	3.0.6
 Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
-Source0:	https://github.com/mdadams/jasper/releases/jasper-version-%{version}.tar.gz
-Patch0:		jasper-1.900.1-fix-filename-buffer-overflow.patch
+Source0:	https://github.com/jasper-software/jasper/releases/download/version-%{version}/jasper-%{version}.tar.gz
 BuildRequires:	pkgconfig(libjpeg)
 %if %{without bootstrap}
 BuildRequires:	pkgconfig(glut)
@@ -46,23 +45,24 @@ Provides:	%{name}-devel = %{version}-%{release}
 This package contains the development files for %{name}.
 
 %prep
-%autosetup -n %{name}-version-%{version} -p1
-mv doc/README doc/README.pdf
-
+%autosetup -p1
 find -type d |xargs chmod 755
 find -type f |xargs chmod 644
 sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
 
-%cmake -G Ninja
+%cmake \
+	-G Ninja \
+	-DJAS_ENABLE_LATEX:BOOL=OFF \
+	-DJAS_ENABLE_CXX:BOOL=ON \
+	-B ../BUILD
 
 %build
-%ninja -C build
+%ninja -C BUILD
 
 %install
-%ninja_install -C build
+%ninja_install -C BUILD
 
 %files
-%doc README LICENSE
 %{_bindir}/imgcmp
 %{_bindir}/imginfo
 %{_bindir}/jasper
@@ -78,7 +78,7 @@ sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
 %{_libdir}/libjasper.so.%{major}*
 
 %files -n %{devname}
-%doc doc/README.pdf doc/jasper.pdf doc/jpeg2000.pdf
+%doc doc/jpeg2000.pdf
 %doc %{_docdir}/JasPer
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*
