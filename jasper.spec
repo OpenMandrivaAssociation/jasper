@@ -9,7 +9,7 @@
 Summary:	JPEG-2000 utilities
 Name:		jasper
 Version:	3.0.6
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.ece.uvic.ca/~mdadams/jasper/
