@@ -12,7 +12,7 @@ Version:	3.0.6
 Release:	2
 License:	BSD-like
 Group:		Graphics
-Url:		http://www.ece.uvic.ca/~mdadams/jasper/
+Url:		https://www.ece.uvic.ca/~mdadams/jasper/
 Source0:	https://github.com/jasper-software/jasper/releases/download/version-%{version}/jasper-%{version}.tar.gz
 BuildRequires:	pkgconfig(libjpeg)
 %if %{without bootstrap}
