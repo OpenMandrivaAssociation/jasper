@@ -1,4 +1,4 @@
-%define major 6
+%define major 7
 %define libname %mklibname %{name}
 %define devname %mklibname %{name} -d
 
@@ -8,8 +8,8 @@
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
-Version:	3.0.6
-Release:	2
+Version:	4.2.8
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		https://www.ece.uvic.ca/~mdadams/jasper/
@@ -20,8 +20,13 @@ BuildRequires:	pkgconfig(glut)
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(xmu)
 %endif
-BuildRequires:	cmake
-BuildRequires:	ninja
+
+BuildSystem:    cmake
+
+BuildOption:    -DJAS_ENABLE_LATEX:BOOL=OFF
+BuildOption: 	 -DJAS_ENABLE_CXX:BOOL=ON
+# not really, but it errors if not enabled
+BuildOption:    -DALLOW_IN_SOURCE_BUILD:BOOL=ON
 
 %description
 JasPer is a software-based implementation of the codec specified in the
@@ -44,23 +49,6 @@ Provides:	%{name}-devel = %{version}-%{release}
 %description -n %{devname}
 This package contains the development files for %{name}.
 
-%prep
-%autosetup -p1
-find -type d |xargs chmod 755
-find -type f |xargs chmod 644
-sed -r 's|(CMAKE_SKIP_BUILD_RPATH) FALSE|\1 TRUE|g' -i CMakeLists.txt
-
-%cmake \
-	-G Ninja \
-	-DJAS_ENABLE_LATEX:BOOL=OFF \
-	-DJAS_ENABLE_CXX:BOOL=ON \
-	-B ../BUILD
-
-%build
-%ninja -C BUILD
-
-%install
-%ninja_install -C BUILD
 
 %files
 %{_bindir}/imgcmp
