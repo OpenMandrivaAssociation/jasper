@@ -8,7 +8,7 @@
 
 Summary:	JPEG-2000 utilities
 Name:		jasper
-Version:	4.2.8
+Version:	4.2.9
 Release:	1
 License:	BSD-like
 Group:		Graphics
